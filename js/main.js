@@ -2,21 +2,37 @@
 
 (function () {
   const RENDER_MORE = 10;
-  const cardTemplateElement = document.querySelector(`#card`).content.querySelector(`.card`);
-  const showMoreTemplateElement = document.querySelector(`#showMore`).content.querySelector(`.showMore`);
-  const loaderTemplateElement = document.querySelector(`#loader`).content.querySelector(`.loader`);
-  const loaderELement = loaderTemplateElement.cloneNode(true);
   const bodyElement = document.querySelector(`body`);
   const formElement = document.querySelector(`.box`);
   const spotElement = document.querySelector(`.spot`);
-  let counter = 0;
+  const title = document.querySelector(`#title`);
+  const text = document.querySelector(`#text`);
+  const link = document.querySelector(`#link`);
+  let clickCount = 0;
+  let renderCount = RENDER_MORE;
+  let store = [];
 
-  bodyElement.appendChild(loaderELement);
-  hideLoader();
+  function createElement(template) {
+    const newElement = document.createElement(`div`);
+    newElement.innerHTML = template;
 
-  function renderCard() {
-    const cardElement = cardTemplateElement.cloneNode(true);
-    spotElement.appendChild(cardElement);
+    return newElement.firstChild;
+  }
+
+  function createCard(cardTitle, cardText, linkUrl = `#`, imageUrl = `https://profitserfing.ru/avatar/6228.jpeg?1593690309`) {
+    return `<a class="card" href=${linkUrl}>
+        <img class="card__image" src=${imageUrl} width="200px" height="200px" alt="Джуниор">
+        <p>${cardTitle}</p>
+        <p>${cardText}</p>
+    </a>`;
+  }
+
+  function createLoader() {
+    return `<div class="loader"></div>`;
+  }
+
+  function createButton() {
+    return `<button class="button" type="button" name="button">Загрузить больше</button>`;
   }
 
   function hideLoader() {
@@ -27,20 +43,34 @@
     loaderELement.classList.remove(`visually-hidden`);
   }
 
-  function renderShowMoreButton() {
-    const showMoreElement = showMoreTemplateElement.cloneNode(true);
-    spotElement.appendChild(showMoreElement);
+  bodyElement.appendChild(createElement(createLoader()));
 
-    showMoreElement.addEventListener(`click`, () => {
+  const loaderELement = document.querySelector(`.loader`);
+
+  hideLoader();
+
+  window.api.template({
+    url: `https://jsonplaceholder.typicode.com/todos/1`,
+  });
+
+  function renderButton() {
+    const button = createElement(createButton());
+    spotElement.appendChild(button);
+
+    button.addEventListener(`click`, () => {
       showLoader();
-      showMoreElement.remove();
+      button.remove();
+      renderCount += RENDER_MORE;
+      spotElement.innerText = ``;
 
-      fetch('https://jsonplaceholder.typicode.com/todos/1')
+      window.api.template({
+        url: `https://jsonplaceholder.typicode.com/todos/1`,
+      })
         .then(() => {
-          for (let i = 0; i < RENDER_MORE; i++) {
-            renderCard();
+          for (let i = 0; i < clickCount; i++) {
+            const cardEl = createElement(createCard(store[i].title, store[i].text, store[i].link));
+            spotElement.appendChild(cardEl);
           }
-          spotElement.appendChild(showMoreElement);
         })
         .then(() => hideLoader());
     });
@@ -49,14 +79,35 @@
   formElement.addEventListener(`submit`, (evt) => {
     evt.preventDefault();
 
-    if (counter < RENDER_MORE) {
+    clickCount++;
+
+    store.push({
+      title: title.value,
+      text: text.value,
+      link: link.value ? link.value : null,
+    });
+
+    const cardEl = createElement(createCard(title.value, text.value, link.value));
+
+    if (clickCount < renderCount) {
       showLoader();
-      fetch('https://jsonplaceholder.typicode.com/todos/1')
-        .then(() => renderCard())
+
+      window.api.template({
+        url: `https://jsonplaceholder.typicode.com/todos/1`,
+      })
+        .then(() => spotElement.appendChild(cardEl))
         .then(() => hideLoader());
-      counter++;
-    } else if (counter >= RENDER_MORE && !document.querySelector(`.showMore`)) {
-      renderShowMoreButton();
     }
+
+    if (clickCount >= renderCount && !document.querySelector(`.button`)) {
+      renderButton();
+    }
+
+    title.value = ``;
+    text.value = ``;
+    link.value = ``;
+
+    text.setCustomValidity(`Ну, хоть что-то напишите, ну.`);
+    title.setCustomValidity(`Ну, хоть что-то напишите, ну.`);
   });
 })();

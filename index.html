@@ -8,35 +8,21 @@
   <body>
     <form class="box" action="#" method="post" enctype="multipart/form-data" autocomplete="off">
       <fieldset class="box__element box__element--image">
-        <input class="visually-hidden" type="file" accept="image/jpeg" name="image" id="image" value="">
+        <input class="visually-hidden" type="file" accept="image/*" name="image" id="image" value="">
         <label class="box__drop-zone" for="image">Картинка</label>
       </fieldset>
       <fieldset class="box__element box__element--text">
-        <input class="box__input" type="text" name="title" placeholder="Заголовок" maxlength="20" pattern="[А-Яа-яЁё]">
-        <input class="box__input" type="email" name="email" placeholder="Ссылка">
-        <input class="box__input" type="text" name="text" placeholder="Текст" maxlength="250" pattern="[А-Яа-яЁё]">
+        <input class="box__input" type="text" name="title" placeholder="Заголовок" id="title">
+        <input class="box__input" type="url" name="link" placeholder="Ссылка" id="link">
+        <textarea class="box__input" type="text" name="text" placeholder="Текст" id="text" rows="5"></textarea>
         <button class="box__button" type="submit" name="submit">Создать</button>
       </fieldset>
     </form>
 
     <div class="spot"></div>
 
-    <template id="card">
-      <div class="card">
-        <img src="https://lh3.googleusercontent.com/proxy/ulvmbl688Slj57VtM2QzQUlbwD5ZmTCiiujbcFxmDApkMgAjo6i42bD7AdMPN3xJ9rNs8VVAFu17AL8" width="200px" height="200px" alt="Джуниор">
-        <p>Заголовок</p>
-        <p>Текст</p>
-      </div>
-    </template>
-
-    <template id="showMore">
-      <button class="showMore" type="button" name="button">Загрузить больше</button>
-    </template>
-
-    <template id="loader">
-      <div class="loader"></div>
-    </template>
-
+    <script src="js/api.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/validation.js"></script>
   </body>
 </html>
