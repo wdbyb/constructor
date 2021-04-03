@@ -8,6 +8,7 @@
   const title = document.querySelector(`#title`);
   const text = document.querySelector(`#text`);
   const link = document.querySelector(`#link`);
+  const img = document.querySelector(`.box__image`);
   let clickCount = 0;
   let renderCount = RENDER_MORE;
   let store = [];
@@ -19,7 +20,7 @@
     return newElement.firstChild;
   }
 
-  function createCard(cardTitle, cardText, linkUrl = `#`, imageUrl = `https://profitserfing.ru/avatar/6228.jpeg?1593690309`) {
+  function createCard(cardTitle, cardText, linkUrl = `#`, imageUrl = `https://www.taemana.com/wp-content/uploads/2017/09/team-placeholder.png`) {
     return `<a class="card" href=${linkUrl}>
         <img class="card__image" src=${imageUrl} width="200px" height="200px" alt="Джуниор">
         <p>${cardTitle}</p>
@@ -67,10 +68,11 @@
         url: `https://jsonplaceholder.typicode.com/todos/1`,
       })
         .then(() => {
-          for (let i = 0; i < clickCount; i++) {
-            const cardEl = createElement(createCard(store[i].title, store[i].text, store[i].link));
-            spotElement.appendChild(cardEl);
-          }
+          store.forEach((card) => {
+            const cardElement = createElement(createCard(card.title, card.text, card.link, card.img));
+            spotElement.appendChild(cardElement);
+          });
+
         })
         .then(() => hideLoader());
     });
@@ -85,9 +87,10 @@
       title: title.value,
       text: text.value,
       link: link.value ? link.value : null,
+      img: img.src ? img.src : null,
     });
 
-    const cardEl = createElement(createCard(title.value, text.value, link.value));
+    const cardEl = createElement(createCard(title.value, text.value, link.value, img.src));
 
     if (clickCount < renderCount) {
       showLoader();
@@ -106,6 +109,7 @@
     title.value = ``;
     text.value = ``;
     link.value = ``;
+    img.src = `https://www.taemana.com/wp-content/uploads/2017/09/team-placeholder.png`;
 
     text.setCustomValidity(`Ну, хоть что-то напишите, ну.`);
     title.setCustomValidity(`Ну, хоть что-то напишите, ну.`);

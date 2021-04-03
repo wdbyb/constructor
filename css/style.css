@@ -47,6 +47,9 @@ a {
 }
 
 .box__element--image {
+  position: relative;
+  width: 200px;
+  min-height: 200px;
   background-color: darkgrey;
   margin-right: 10px;
 }
@@ -57,8 +60,14 @@ a {
   flex-direction: column;
 }
 
+.box__image {
+  position: absolute;
+}
+
 .box__drop-zone {
-  padding: 75px 50px;
+  position: absolute;
+  z-index: 0;
+  padding: 100px;
 }
 
 .box__input {

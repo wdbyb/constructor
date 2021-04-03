@@ -8,8 +8,9 @@
   <body>
     <form class="box" action="#" method="post" enctype="multipart/form-data" autocomplete="off">
       <fieldset class="box__element box__element--image">
-        <input class="visually-hidden" type="file" accept="image/*" name="image" id="image" value="">
-        <label class="box__drop-zone" for="image">Картинка</label>
+        <img class="box__image" src="https://www.taemana.com/wp-content/uploads/2017/09/team-placeholder.png" width="200px" height="200px">
+        <input class="visually-hidden" type="file" accept="image/*" name="image" id="image">
+        <label class="box__drop-zone" for="image"></label>
       </fieldset>
       <fieldset class="box__element box__element--text">
         <input class="box__input" type="text" name="title" placeholder="Заголовок" id="title">
@@ -23,6 +24,7 @@
 
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/image.js"></script>
     <script src="js/validation.js"></script>
   </body>
 </html>
