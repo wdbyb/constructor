@@ -20,6 +20,10 @@ a {
   padding: 5px;
 }
 
+.card p {
+  word-break: break-all;
+}
+
 .spot {
   display: flex;
   flex-wrap: wrap;
